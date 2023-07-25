@@ -12,6 +12,7 @@ namespace Ty1_DLG_Editor
         public int CamIndex;
         public List<string> EffectParams;
         public float EffectDelay;
+        public Phoneme Phoneme;
 
         public Phrase(int index, int camIndex, List<string> effectParams, float effectDelay)
         {
@@ -19,6 +20,7 @@ namespace Ty1_DLG_Editor
             this.CamIndex = camIndex;
             this.EffectParams = effectParams;
             this.EffectDelay = effectDelay;
+            this.Phoneme = new Phoneme("", 0, 200, 200);
         }
 
         public override string ToString()

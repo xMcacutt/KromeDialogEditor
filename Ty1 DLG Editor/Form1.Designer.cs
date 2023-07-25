@@ -75,8 +75,6 @@
             OutTime = new TextBox();
             InTimeLabel = new Label();
             InTime = new TextBox();
-            PhonemeList = new ListBox();
-            AddPhonemeButton = new Button();
             SubtitleNrLabel = new Label();
             SubtitleNr = new TextBox();
             PhonemeNameLabel = new Label();
@@ -122,6 +120,8 @@
             OutputTab = new TabPage();
             OutputText = new RichTextBox();
             WarningMessage = new Label();
+            PhonemePhraseCombo = new ComboBox();
+            PhonemePhraseLabel = new Label();
             TabControl.SuspendLayout();
             ActorTab.SuspendLayout();
             CameraTab.SuspendLayout();
@@ -137,8 +137,8 @@
             // 
             TabControl.Controls.Add(ActorTab);
             TabControl.Controls.Add(CameraTab);
-            TabControl.Controls.Add(PhonemeTab);
             TabControl.Controls.Add(PhraseTab);
+            TabControl.Controls.Add(PhonemeTab);
             TabControl.Controls.Add(CellTab);
             TabControl.Controls.Add(OutputTab);
             TabControl.Dock = DockStyle.Top;
@@ -525,6 +525,8 @@
             // 
             // PhonemeTab
             // 
+            PhonemeTab.Controls.Add(PhonemePhraseLabel);
+            PhonemeTab.Controls.Add(PhonemePhraseCombo);
             PhonemeTab.Controls.Add(ATSButtonPhoneme);
             PhonemeTab.Controls.Add(SubtitleFileName);
             PhonemeTab.Controls.Add(SubtitleFileNameLabel);
@@ -532,8 +534,6 @@
             PhonemeTab.Controls.Add(OutTime);
             PhonemeTab.Controls.Add(InTimeLabel);
             PhonemeTab.Controls.Add(InTime);
-            PhonemeTab.Controls.Add(PhonemeList);
-            PhonemeTab.Controls.Add(AddPhonemeButton);
             PhonemeTab.Controls.Add(SubtitleNrLabel);
             PhonemeTab.Controls.Add(SubtitleNr);
             PhonemeTab.Controls.Add(PhonemeNameLabel);
@@ -548,7 +548,7 @@
             // 
             // ATSButtonPhoneme
             // 
-            ATSButtonPhoneme.Location = new Point(130, 141);
+            ATSButtonPhoneme.Location = new Point(8, 141);
             ATSButtonPhoneme.Name = "ATSButtonPhoneme";
             ATSButtonPhoneme.Size = new Size(117, 23);
             ATSButtonPhoneme.TabIndex = 47;
@@ -605,27 +605,6 @@
             InTime.Size = new Size(110, 23);
             InTime.TabIndex = 19;
             InTime.Text = "200";
-            // 
-            // PhonemeList
-            // 
-            PhonemeList.FormattingEnabled = true;
-            PhonemeList.ItemHeight = 15;
-            PhonemeList.Location = new Point(253, 6);
-            PhonemeList.Name = "PhonemeList";
-            PhonemeList.Size = new Size(249, 379);
-            PhonemeList.TabIndex = 17;
-            PhonemeList.SelectedIndexChanged += PhonemeList_SelectedIndexChanged;
-            PhonemeList.KeyDown += RemoveSelected;
-            // 
-            // AddPhonemeButton
-            // 
-            AddPhonemeButton.Location = new Point(8, 141);
-            AddPhonemeButton.Name = "AddPhonemeButton";
-            AddPhonemeButton.Size = new Size(94, 23);
-            AddPhonemeButton.TabIndex = 16;
-            AddPhonemeButton.Text = "Add Phoneme";
-            AddPhonemeButton.UseVisualStyleBackColor = true;
-            AddPhonemeButton.Click += AddPhonemeButton_Click;
             // 
             // SubtitleNrLabel
             // 
@@ -1054,6 +1033,24 @@
             WarningMessage.Size = new Size(0, 15);
             WarningMessage.TabIndex = 6;
             // 
+            // PhonemePhraseCombo
+            // 
+            PhonemePhraseCombo.FormattingEnabled = true;
+            PhonemePhraseCombo.Location = new Point(263, 24);
+            PhonemePhraseCombo.Name = "PhonemePhraseCombo";
+            PhonemePhraseCombo.Size = new Size(239, 23);
+            PhonemePhraseCombo.TabIndex = 48;
+            PhonemePhraseCombo.SelectedIndexChanged += PhonemePhraseCombo_SelectedIndexChanged;
+            // 
+            // PhonemePhraseLabel
+            // 
+            PhonemePhraseLabel.AutoSize = true;
+            PhonemePhraseLabel.Location = new Point(263, 6);
+            PhonemePhraseLabel.Name = "PhonemePhraseLabel";
+            PhonemePhraseLabel.Size = new Size(42, 15);
+            PhonemePhraseLabel.TabIndex = 49;
+            PhonemePhraseLabel.Text = "Phrase";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1126,8 +1123,6 @@
         private TextBox TCBSplineW1;
         public ListBox CamSplineList;
         public ListBox TCBInfoList;
-        public ListBox PhonemeList;
-        private Button AddPhonemeButton;
         private Label SubtitleNrLabel;
         private TextBox SubtitleNr;
         private Label PhonemeNameLabel;
@@ -1180,5 +1175,7 @@
         private Button ATSButtonTCB;
         private Button ATSButtonPhoneme;
         private Button ATSButtonPhrase;
+        private Label PhonemePhraseLabel;
+        private ComboBox PhonemePhraseCombo;
     }
 }

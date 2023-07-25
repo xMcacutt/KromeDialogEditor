@@ -18,11 +18,11 @@ namespace Ty1_DLG_Editor
             InitializeComponent();
             ActorList.DataSource = _actors;
             CameraList.DataSource = _cameras;
-            PhonemeList.DataSource = _phonemes;
             PhraseList.DataSource = _phrases;
             CameraCombo.DataSource = _cameras;
             ActorCombo.DataSource = _actors;
             PhraseCombo.DataSource = _phrases;
+            PhonemePhraseCombo.DataSource = _phrases;
         }
 
         //ADD BUTTONS
@@ -187,6 +187,7 @@ namespace Ty1_DLG_Editor
             if (CameraList.SelectedItem == null || TCBInfoList.SelectedItem == null)
             {
                 WarningMessage.Text = "Selected index cannot be null";
+                SystemSounds.Asterisk.Play();
                 return;
             }
             _cameras[CameraList.SelectedIndex].TCBInfos[TCBInfoList.SelectedIndex].Weight1 = float.Parse(TCBSplineW1.Text);
@@ -200,6 +201,7 @@ namespace Ty1_DLG_Editor
             if (CameraList.SelectedItem == null || CamSplineList.SelectedItem == null)
             {
                 WarningMessage.Text = "Selected index cannot be null";
+                SystemSounds.Asterisk.Play();
                 return;
             }
             _cameras[CameraList.SelectedIndex].CamSplines[CamSplineList.SelectedIndex].Source = SrcXYZ.Text;
@@ -210,16 +212,22 @@ namespace Ty1_DLG_Editor
 
         private void ATSButtonPhoneme_Click(object sender, EventArgs e)
         {
-            if (PhonemeList.SelectedItem == null)
+            if (PhonemePhraseCombo.SelectedItem == null)
             {
-                WarningMessage.Text = "Selected index cannot be null";
+                WarningMessage.Text = "Selected phrase cannot be null";
+                SystemSounds.Asterisk.Play();
                 return;
             }
-            _phonemes[PhonemeList.SelectedIndex].Name = PhonemeName.Text;
-            _phonemes[PhonemeList.SelectedIndex].SubtitleNr = int.Parse(SubtitleNr.Text);
-            _phonemes[PhonemeList.SelectedIndex].InTime = float.Parse(InTime.Text);
-            _phonemes[PhonemeList.SelectedIndex].OutTime = float.Parse(OutTime.Text);
-            ((BindingList<Phoneme>)PhonemeList.DataSource).ResetItem(PhonemeList.SelectedIndex);
+            if(string.IsNullOrWhiteSpace((PhonemePhraseCombo.SelectedItem as Phrase).Phoneme.Name))
+            {
+                WarningMessage.Text = "Phoneme name cannot be null";
+                SystemSounds.Asterisk.Play();
+                return;
+            }
+            (PhonemePhraseCombo.SelectedItem as Phrase).Phoneme.Name = PhonemeName.Text;
+            (PhonemePhraseCombo.SelectedItem as Phrase).Phoneme.SubtitleNr = int.Parse(SubtitleNr.Text);
+            (PhonemePhraseCombo.SelectedItem as Phrase).Phoneme.InTime = float.Parse(InTime.Text);
+            (PhonemePhraseCombo.SelectedItem as Phrase).Phoneme.OutTime = float.Parse(OutTime.Text);
             WarningMessage.Text = "Applied current to selected successfully";
         }
 
@@ -228,6 +236,7 @@ namespace Ty1_DLG_Editor
             if (PhraseList.SelectedItem == null)
             {
                 WarningMessage.Text = "Selected index cannot be null";
+                SystemSounds.Asterisk.Play();
                 return;
             }
             List<string> effectParams = new List<string>();
@@ -291,16 +300,6 @@ namespace Ty1_DLG_Editor
             TrgtXYZ.Text = cs.Target;
         }
 
-        private void PhonemeList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (PhonemeList.SelectedItem == null) return;
-            Phoneme p = (Phoneme)PhonemeList.SelectedItem;
-            PhonemeName.Text = p.Name;
-            SubtitleNr.Text = p.SubtitleNr.ToString();
-            InTime.Text = p.InTime.ToString();
-            OutTime.Text = p.OutTime.ToString();
-        }
-
         private void PhraseList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (PhraseList.SelectedItem == null) return;
@@ -310,6 +309,34 @@ namespace Ty1_DLG_Editor
             if (p.EffectParams.Count > 1) EffectParam2.Text = p.EffectParams[1];
             if (p.EffectParams.Count > 2) EffectParam3.Text = p.EffectParams[2];
             EffectDelay.Text = p.EffectDelay.ToString();
+        }
+
+        private void CellSelectChanged(object sender, EventArgs e)
+        {
+            if (ActorCombo.SelectedItem == null || PhraseCombo.SelectedItem == null) return;
+            Actor a = (Actor)ActorCombo.SelectedItem;
+            if (!a.Cells.ContainsKey(PhraseCombo.SelectedIndex)) return;
+            LipAnimName.Text = a.Cells[PhraseCombo.SelectedIndex].LipAnim;
+            LipScaler.Text = a.Cells[PhraseCombo.SelectedIndex].LipScaler.ToString();
+            HeadAnim.Text = a.Cells[PhraseCombo.SelectedIndex].HeadAnim;
+            HeadType.Text = a.Cells[PhraseCombo.SelectedIndex].HeadType.ToString();
+            BodyAnim.Text = a.Cells[PhraseCombo.SelectedIndex].BodyAnim;
+            BodyType.Text = a.Cells[PhraseCombo.SelectedIndex].BodyType.ToString();
+            SpeakingCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].Speaking;
+            FitBodyAnimCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].FitBodyAnim;
+            FitHeadAnimCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].FitHeadAnim;
+            ActorPos.Text = a.Cells[PhraseCombo.SelectedIndex].ActorPos;
+            ActorRot.Text = a.Cells[PhraseCombo.SelectedIndex].ActorRot;
+        }
+
+        private void PhonemePhraseCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PhonemePhraseCombo.SelectedItem == null) return;
+            Phoneme p = (PhonemePhraseCombo.SelectedItem as Phrase).Phoneme;
+            PhonemeName.Text = p.Name;
+            SubtitleNr.Text = p.SubtitleNr.ToString();
+            InTime.Text = p.InTime.ToString();
+            OutTime.Text = p.OutTime.ToString();
         }
 
         //REMOVE ITEMS
@@ -335,24 +362,6 @@ namespace Ty1_DLG_Editor
                 }
             }
             if (bindingList != null && item != null) bindingList.Remove(item);
-        }
-
-        private void CellSelectChanged(object sender, EventArgs e)
-        {
-            if (ActorCombo.SelectedItem == null || PhraseCombo.SelectedItem == null) return;
-            Actor a = (Actor)ActorCombo.SelectedItem;
-            if (!a.Cells.ContainsKey(PhraseCombo.SelectedIndex)) return;
-            LipAnimName.Text = a.Cells[PhraseCombo.SelectedIndex].LipAnim;
-            LipScaler.Text = a.Cells[PhraseCombo.SelectedIndex].LipScaler.ToString();
-            HeadAnim.Text = a.Cells[PhraseCombo.SelectedIndex].HeadAnim;
-            HeadType.Text = a.Cells[PhraseCombo.SelectedIndex].HeadType.ToString();
-            BodyAnim.Text = a.Cells[PhraseCombo.SelectedIndex].BodyAnim;
-            BodyType.Text = a.Cells[PhraseCombo.SelectedIndex].BodyType.ToString();
-            SpeakingCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].Speaking;
-            FitBodyAnimCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].FitBodyAnim;
-            FitHeadAnimCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].FitHeadAnim;
-            ActorPos.Text = a.Cells[PhraseCombo.SelectedIndex].ActorPos;
-            ActorRot.Text = a.Cells[PhraseCombo.SelectedIndex].ActorRot;
         }
 
         private void ApplyCellButton_Click(object sender, EventArgs e)
@@ -392,12 +401,12 @@ namespace Ty1_DLG_Editor
             output.Add("TotalPhrases = " + _phrases.Count);
             output.Add("");
             output.Add("[PHONEMES]");
-            foreach (Phoneme p in _phonemes)
+            foreach (Phrase p in _phrases)
             {
-                output.Add("PhonemeName = " + p.Name);
-                output.Add("SubtitleNr = " + p.SubtitleNr);
-                output.Add("InTime = " + p.InTime.ToString());
-                output.Add("OutTime = " + p.OutTime.ToString());
+                output.Add("PhonemeName = " + p.Phoneme.Name);
+                output.Add("SubtitleNr = " + p.Phoneme.SubtitleNr);
+                output.Add("InTime = " + p.Phoneme.InTime.ToString());
+                output.Add("OutTime = " + p.Phoneme.OutTime.ToString());
             }
             output.Add("");
             output.Add("[ACTORS]");
