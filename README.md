@@ -25,8 +25,8 @@ for examples of effect parameters.
 
 ### Phonemes
 Phonemes are individual audio clips along with their subtitle lines. 
-The phoneme name should be a valid ini file name without the extension, which is then used to reference the audio and subtitle files.
-A subtitle file (.ini) simply separates each phoneme with a line break so the subtitleNr is essentially the line index of the subtitle text you want to apply to the phrase. 
+The phoneme name should be a valid subtitle file name without the extension, which is then used to reference the audio and subtitle files.
+A subtitle file (.ENGLISH (or other language)) is formatted such that each set of 255 bytes after the initial six are a line. The line is read until a null terminator (0x0) byte is found. The subtitleNr is the index of the subtitle text from the subtitle file that you want to apply to the phrase. 
 
 ### Cells
 Think of the cells section like a table. The rows are the phrases and the columns are the actors.
