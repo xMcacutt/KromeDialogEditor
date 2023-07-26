@@ -3,6 +3,7 @@ using System.Media;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Text;
 
 namespace Ty1_DLG_Editor
 {
@@ -32,11 +33,18 @@ namespace Ty1_DLG_Editor
             if (!string.IsNullOrWhiteSpace(ActorName.Text)
                 && !string.IsNullOrWhiteSpace(ActorModel.Text))
             {
+                if (!Path.Exists(BadPath.Text))
+                {
+                    WarningMessage.Text = "Bad path is not valid";
+                    SystemSounds.Asterisk.Play();
+                    return;
+                }
                 if (!_actors.Any(a => a.Name == ActorName.Text))
                 {
-                    _actors.Add(new Actor(ActorName.Text, ActorModel.Text));
+                    _actors.Add(new Actor(ActorName.Text, ActorModel.Text, BadPath.Text));
                     ActorName.Text = "";
                     ActorModel.Text = "";
+                    BadPath.Text = "";
                     return;
                 }
                 WarningMessage.Text = "Actor already exists";
@@ -104,24 +112,6 @@ namespace Ty1_DLG_Editor
             SystemSounds.Asterisk.Play();
         }
 
-        private void AddPhonemeButton_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(PhonemeName.Text)
-                && !string.IsNullOrWhiteSpace(SubtitleNr.Text)
-                && !string.IsNullOrWhiteSpace(InTime.Text)
-                && !string.IsNullOrWhiteSpace(OutTime.Text))
-            {
-                _phonemes.Add(new Phoneme(
-                    PhonemeName.Text,
-                    int.Parse(SubtitleNr.Text),
-                    float.Parse(InTime.Text),
-                    float.Parse(OutTime.Text)));
-                return;
-            }
-            WarningMessage.Text = "Phoneme fields cannot be empty";
-            SystemSounds.Asterisk.Play();
-        }
-
         private void AddPhraseButton_Click(object sender, EventArgs e)
         {
             if (CameraCombo.SelectedItem != null
@@ -161,6 +151,7 @@ namespace Ty1_DLG_Editor
             }
             _actors[ActorList.SelectedIndex].Name = ActorName.Text;
             _actors[ActorList.SelectedIndex].Model = ActorModel.Text;
+            _actors[ActorList.SelectedIndex].BadPath = BadPath.Text;
             ((BindingList<Actor>)ActorList.DataSource).ResetItem(ActorList.SelectedIndex);
             WarningMessage.Text = "Applied current to selected successfully";
         }
@@ -218,7 +209,7 @@ namespace Ty1_DLG_Editor
                 SystemSounds.Asterisk.Play();
                 return;
             }
-            if(string.IsNullOrWhiteSpace((PhonemePhraseCombo.SelectedItem as Phrase).Phoneme.Name))
+            if (string.IsNullOrWhiteSpace(PhonemeName.Text))
             {
                 WarningMessage.Text = "Phoneme name cannot be null";
                 SystemSounds.Asterisk.Play();
@@ -258,6 +249,7 @@ namespace Ty1_DLG_Editor
             Actor a = (Actor)ActorList.SelectedItem;
             ActorName.Text = a.Name;
             ActorModel.Text = a.Model;
+            BadPath.Text = a.BadPath;
         }
 
         private void CameraList_SelectedIndexChanged(object sender, EventArgs e)
@@ -316,15 +308,19 @@ namespace Ty1_DLG_Editor
             if (ActorCombo.SelectedItem == null || PhraseCombo.SelectedItem == null) return;
             Actor a = (Actor)ActorCombo.SelectedItem;
             if (!a.Cells.ContainsKey(PhraseCombo.SelectedIndex)) return;
-            LipAnimName.Text = a.Cells[PhraseCombo.SelectedIndex].LipAnim;
+            LipAnimCombo.DataSource = a.LipAnims;
+            HeadAnimCombo.DataSource = a.HeadAnims;
+            BodyAnimCombo.DataSource = a.BodyAnims;
+            LipAnimCombo.SelectedItem = a.Cells[PhraseCombo.SelectedIndex].LipAnim;
             LipScaler.Text = a.Cells[PhraseCombo.SelectedIndex].LipScaler.ToString();
-            HeadAnim.Text = a.Cells[PhraseCombo.SelectedIndex].HeadAnim;
+            HeadAnimCombo.SelectedItem = a.Cells[PhraseCombo.SelectedIndex].HeadAnim;
             HeadType.Text = a.Cells[PhraseCombo.SelectedIndex].HeadType.ToString();
-            BodyAnim.Text = a.Cells[PhraseCombo.SelectedIndex].BodyAnim;
+            BodyAnimCombo.SelectedItem = a.Cells[PhraseCombo.SelectedIndex].BodyAnim;
             BodyType.Text = a.Cells[PhraseCombo.SelectedIndex].BodyType.ToString();
             SpeakingCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].Speaking;
             FitBodyAnimCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].FitBodyAnim;
             FitHeadAnimCheck.Checked = a.Cells[PhraseCombo.SelectedIndex].FitHeadAnim;
+            if (LockPosRotCheck.Checked) return;
             ActorPos.Text = a.Cells[PhraseCombo.SelectedIndex].ActorPos;
             ActorRot.Text = a.Cells[PhraseCombo.SelectedIndex].ActorRot;
         }
@@ -369,11 +365,11 @@ namespace Ty1_DLG_Editor
             if (ActorCombo.SelectedItem == null || PhraseCombo.SelectedItem == null) return;
             Actor a = (Actor)ActorCombo.SelectedItem;
             if (!a.Cells.ContainsKey(PhraseCombo.SelectedIndex)) return;
-            a.Cells[PhraseCombo.SelectedIndex].LipAnim = LipAnimName.Text;
+            a.Cells[PhraseCombo.SelectedIndex].LipAnim = LipAnimCombo.SelectedItem.ToString();
             a.Cells[PhraseCombo.SelectedIndex].LipScaler = int.Parse(LipScaler.Text);
-            a.Cells[PhraseCombo.SelectedIndex].HeadAnim = HeadAnim.Text;
+            a.Cells[PhraseCombo.SelectedIndex].HeadAnim = HeadAnimCombo.SelectedItem.ToString();
             a.Cells[PhraseCombo.SelectedIndex].HeadType = int.Parse(HeadType.Text);
-            a.Cells[PhraseCombo.SelectedIndex].BodyAnim = BodyAnim.Text;
+            a.Cells[PhraseCombo.SelectedIndex].BodyAnim = BodyAnimCombo.SelectedItem.ToString();
             a.Cells[PhraseCombo.SelectedIndex].BodyType = int.Parse(BodyType.Text);
             a.Cells[PhraseCombo.SelectedIndex].Speaking = SpeakingCheck.Checked;
             a.Cells[PhraseCombo.SelectedIndex].FitBodyAnim = FitBodyAnimCheck.Checked;
@@ -439,9 +435,10 @@ namespace Ty1_DLG_Editor
             }
             output.Add("");
             output.Add("[CELLS]");
-            foreach (Actor a in _actors)
+
+            foreach (Phrase p in _phrases)
             {
-                foreach (Phrase p in _phrases)
+                foreach (Actor a in _actors)
                 {
                     Cell c = a.Cells[p.Index];
                     output.Add("Speaking = " + (c.Speaking ? 1 : 0));
@@ -460,6 +457,7 @@ namespace Ty1_DLG_Editor
                     output.Add("ActorRot = " + c.ActorRot);
                 }
             }
+
             output.Add("");
             output.Add("[PHRASES]");
             foreach (Phrase p in _phrases)
@@ -471,6 +469,29 @@ namespace Ty1_DLG_Editor
             output.Add("");
             output.Add("[END]");
             return output.ToArray();
+        }
+
+        private void SaveSubsButton_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SubtitlesRTB.Text))
+            {
+                WarningMessage.Text = "Text cannot be empty";
+                SystemSounds.Asterisk.Play();
+                return;
+            }
+            SaveFileDialog dialog = new SaveFileDialog();
+            var result = dialog.ShowDialog();
+            if (result != DialogResult.OK) return;
+            string[] lines = SubtitlesRTB.Lines.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            using MemoryStream stream = new MemoryStream();
+            stream.Write("LANG"u8);
+            stream.Write(new byte[] { (byte)lines.Length, 0x0 });
+            foreach(string line in lines)
+            {
+                stream.Write(Encoding.ASCII.GetBytes(line));
+                stream.Write(new byte[255 - line.Length]);
+            }
+            File.WriteAllBytes(dialog.FileName, stream.ToArray());
         }
     }
 }

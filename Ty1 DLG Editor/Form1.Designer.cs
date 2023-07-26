@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             TabControl = new TabControl();
             ActorTab = new TabPage();
+            BadPathLabel = new Label();
+            BadPath = new TextBox();
             ATSButtonActor = new Button();
             ActorList = new ListBox();
             AddActorButton = new Button();
@@ -67,18 +69,6 @@
             NearPlane = new TextBox();
             FOVLabel = new Label();
             FOV = new TextBox();
-            PhonemeTab = new TabPage();
-            ATSButtonPhoneme = new Button();
-            SubtitleFileName = new TextBox();
-            SubtitleFileNameLabel = new Label();
-            OutTimeLabel = new Label();
-            OutTime = new TextBox();
-            InTimeLabel = new Label();
-            InTime = new TextBox();
-            SubtitleNrLabel = new Label();
-            SubtitleNr = new TextBox();
-            PhonemeNameLabel = new Label();
-            PhonemeName = new TextBox();
             PhraseTab = new TabPage();
             ATSButtonPhrase = new Button();
             EffectDelayLabel = new Label();
@@ -91,26 +81,41 @@
             EffectParamsLabel = new Label();
             EffectParam1 = new TextBox();
             CameraLabel = new Label();
+            PhonemeTab = new TabPage();
+            PhonemePhraseLabel = new Label();
+            PhonemePhraseCombo = new ComboBox();
+            ATSButtonPhoneme = new Button();
+            SubtitleFileName = new TextBox();
+            SubtitleFileNameLabel = new Label();
+            OutTimeLabel = new Label();
+            OutTime = new TextBox();
+            InTimeLabel = new Label();
+            InTime = new TextBox();
+            SubtitleNrLabel = new Label();
+            SubtitleNr = new TextBox();
+            PhonemeNameLabel = new Label();
+            PhonemeName = new TextBox();
             CellTab = new TabPage();
             CellPanel = new Panel();
+            LockPosRotCheck = new CheckBox();
+            BodyAnimCombo = new ComboBox();
+            HeadAnimCombo = new ComboBox();
+            LipAnimCombo = new ComboBox();
             ActorRot = new TextBox();
             ApplyCellButton = new Button();
             RotLabel = new Label();
             ActorPos = new TextBox();
             PosLabel = new Label();
             FitBodyAnimCheck = new CheckBox();
-            BodyAnim = new TextBox();
             BodyAnimLabel = new Label();
             BodyType = new TextBox();
             BodyTypeLabel = new Label();
             FitHeadAnimCheck = new CheckBox();
-            HeadAnim = new TextBox();
             HeadAnimLabel = new Label();
             HeadType = new TextBox();
             HeadTypeLabel = new Label();
             LipScaler = new TextBox();
             LipScalerLabel = new Label();
-            LipAnimName = new TextBox();
             SpeakingCheck = new CheckBox();
             LipAnimLabel = new Label();
             PhraseCombo = new ComboBox();
@@ -120,17 +125,20 @@
             OutputTab = new TabPage();
             OutputText = new RichTextBox();
             WarningMessage = new Label();
-            PhonemePhraseCombo = new ComboBox();
-            PhonemePhraseLabel = new Label();
+            tabPage1 = new TabPage();
+            SubtitlesRTB = new RichTextBox();
+            SaveSubsButton = new Button();
+            SubsGuideLabel = new Label();
             TabControl.SuspendLayout();
             ActorTab.SuspendLayout();
             CameraTab.SuspendLayout();
             ActiveCameraPanel.SuspendLayout();
-            PhonemeTab.SuspendLayout();
             PhraseTab.SuspendLayout();
+            PhonemeTab.SuspendLayout();
             CellTab.SuspendLayout();
             CellPanel.SuspendLayout();
             OutputTab.SuspendLayout();
+            tabPage1.SuspendLayout();
             SuspendLayout();
             // 
             // TabControl
@@ -141,6 +149,7 @@
             TabControl.Controls.Add(PhonemeTab);
             TabControl.Controls.Add(CellTab);
             TabControl.Controls.Add(OutputTab);
+            TabControl.Controls.Add(tabPage1);
             TabControl.Dock = DockStyle.Top;
             TabControl.ItemSize = new Size(50, 20);
             TabControl.Location = new Point(0, 0);
@@ -152,6 +161,8 @@
             // 
             // ActorTab
             // 
+            ActorTab.Controls.Add(BadPathLabel);
+            ActorTab.Controls.Add(BadPath);
             ActorTab.Controls.Add(ATSButtonActor);
             ActorTab.Controls.Add(ActorList);
             ActorTab.Controls.Add(AddActorButton);
@@ -167,12 +178,28 @@
             ActorTab.Text = "Actor";
             ActorTab.UseVisualStyleBackColor = true;
             // 
+            // BadPathLabel
+            // 
+            BadPathLabel.AutoSize = true;
+            BadPathLabel.Location = new Point(8, 94);
+            BadPathLabel.Name = "BadPathLabel";
+            BadPathLabel.Size = new Size(57, 15);
+            BadPathLabel.TabIndex = 13;
+            BadPathLabel.Text = "BAD Path";
+            // 
+            // BadPath
+            // 
+            BadPath.Location = new Point(8, 112);
+            BadPath.Name = "BadPath";
+            BadPath.Size = new Size(239, 23);
+            BadPath.TabIndex = 3;
+            // 
             // ATSButtonActor
             // 
-            ATSButtonActor.Location = new Point(130, 97);
+            ATSButtonActor.Location = new Point(130, 141);
             ATSButtonActor.Name = "ATSButtonActor";
             ATSButtonActor.Size = new Size(117, 23);
-            ATSButtonActor.TabIndex = 12;
+            ATSButtonActor.TabIndex = 5;
             ATSButtonActor.Text = "Apply To Selected";
             ATSButtonActor.UseVisualStyleBackColor = true;
             ATSButtonActor.Click += ATSButtonActor_Click;
@@ -184,16 +211,16 @@
             ActorList.Location = new Point(253, 6);
             ActorList.Name = "ActorList";
             ActorList.Size = new Size(249, 379);
-            ActorList.TabIndex = 11;
+            ActorList.TabIndex = 6;
             ActorList.SelectedIndexChanged += ActorList_SelectedIndexChanged;
             ActorList.KeyDown += RemoveSelected;
             // 
             // AddActorButton
             // 
-            AddActorButton.Location = new Point(8, 97);
+            AddActorButton.Location = new Point(8, 141);
             AddActorButton.Name = "AddActorButton";
             AddActorButton.Size = new Size(75, 23);
-            AddActorButton.TabIndex = 10;
+            AddActorButton.TabIndex = 4;
             AddActorButton.Text = "Add Actor";
             AddActorButton.UseVisualStyleBackColor = true;
             AddActorButton.Click += AddActorButton_Click;
@@ -203,16 +230,16 @@
             ActorModelLabel.AutoSize = true;
             ActorModelLabel.Location = new Point(8, 50);
             ActorModelLabel.Name = "ActorModelLabel";
-            ActorModelLabel.Size = new Size(73, 15);
+            ActorModelLabel.Size = new Size(140, 15);
             ActorModelLabel.TabIndex = 8;
-            ActorModelLabel.Text = "Actor Model";
+            ActorModelLabel.Text = "Actor Model (.bad name)";
             // 
             // ActorModel
             // 
             ActorModel.Location = new Point(8, 68);
             ActorModel.Name = "ActorModel";
             ActorModel.Size = new Size(239, 23);
-            ActorModel.TabIndex = 9;
+            ActorModel.TabIndex = 2;
             // 
             // ActorNameLabel
             // 
@@ -228,7 +255,7 @@
             ActorName.Location = new Point(8, 24);
             ActorName.Name = "ActorName";
             ActorName.Size = new Size(239, 23);
-            ActorName.TabIndex = 7;
+            ActorName.TabIndex = 1;
             // 
             // CameraTab
             // 
@@ -523,122 +550,6 @@
             FOV.TabIndex = 13;
             FOV.Text = "0.97";
             // 
-            // PhonemeTab
-            // 
-            PhonemeTab.Controls.Add(PhonemePhraseLabel);
-            PhonemeTab.Controls.Add(PhonemePhraseCombo);
-            PhonemeTab.Controls.Add(ATSButtonPhoneme);
-            PhonemeTab.Controls.Add(SubtitleFileName);
-            PhonemeTab.Controls.Add(SubtitleFileNameLabel);
-            PhonemeTab.Controls.Add(OutTimeLabel);
-            PhonemeTab.Controls.Add(OutTime);
-            PhonemeTab.Controls.Add(InTimeLabel);
-            PhonemeTab.Controls.Add(InTime);
-            PhonemeTab.Controls.Add(SubtitleNrLabel);
-            PhonemeTab.Controls.Add(SubtitleNr);
-            PhonemeTab.Controls.Add(PhonemeNameLabel);
-            PhonemeTab.Controls.Add(PhonemeName);
-            PhonemeTab.Location = new Point(4, 24);
-            PhonemeTab.Name = "PhonemeTab";
-            PhonemeTab.Padding = new Padding(3);
-            PhonemeTab.Size = new Size(510, 403);
-            PhonemeTab.TabIndex = 1;
-            PhonemeTab.Text = "Phoneme";
-            PhonemeTab.UseVisualStyleBackColor = true;
-            // 
-            // ATSButtonPhoneme
-            // 
-            ATSButtonPhoneme.Location = new Point(8, 141);
-            ATSButtonPhoneme.Name = "ATSButtonPhoneme";
-            ATSButtonPhoneme.Size = new Size(117, 23);
-            ATSButtonPhoneme.TabIndex = 47;
-            ATSButtonPhoneme.Text = "Apply To Selected";
-            ATSButtonPhoneme.UseVisualStyleBackColor = true;
-            ATSButtonPhoneme.Click += ATSButtonPhoneme_Click;
-            // 
-            // SubtitleFileName
-            // 
-            SubtitleFileName.Location = new Point(8, 362);
-            SubtitleFileName.Name = "SubtitleFileName";
-            SubtitleFileName.Size = new Size(239, 23);
-            SubtitleFileName.TabIndex = 7;
-            // 
-            // SubtitleFileNameLabel
-            // 
-            SubtitleFileNameLabel.AutoSize = true;
-            SubtitleFileNameLabel.Location = new Point(8, 344);
-            SubtitleFileNameLabel.Name = "SubtitleFileNameLabel";
-            SubtitleFileNameLabel.Size = new Size(103, 15);
-            SubtitleFileNameLabel.TabIndex = 6;
-            SubtitleFileNameLabel.Text = "Subtitle File Name";
-            // 
-            // OutTimeLabel
-            // 
-            OutTimeLabel.AutoSize = true;
-            OutTimeLabel.Location = new Point(137, 94);
-            OutTimeLabel.Name = "OutTimeLabel";
-            OutTimeLabel.Size = new Size(56, 15);
-            OutTimeLabel.TabIndex = 21;
-            OutTimeLabel.Text = "Out Time";
-            // 
-            // OutTime
-            // 
-            OutTime.Location = new Point(137, 112);
-            OutTime.Name = "OutTime";
-            OutTime.Size = new Size(110, 23);
-            OutTime.TabIndex = 20;
-            OutTime.Text = "200";
-            // 
-            // InTimeLabel
-            // 
-            InTimeLabel.AutoSize = true;
-            InTimeLabel.Location = new Point(8, 94);
-            InTimeLabel.Name = "InTimeLabel";
-            InTimeLabel.Size = new Size(46, 15);
-            InTimeLabel.TabIndex = 18;
-            InTimeLabel.Text = "In Time";
-            // 
-            // InTime
-            // 
-            InTime.Location = new Point(8, 112);
-            InTime.Name = "InTime";
-            InTime.Size = new Size(110, 23);
-            InTime.TabIndex = 19;
-            InTime.Text = "200";
-            // 
-            // SubtitleNrLabel
-            // 
-            SubtitleNrLabel.AutoSize = true;
-            SubtitleNrLabel.Location = new Point(8, 50);
-            SubtitleNrLabel.Name = "SubtitleNrLabel";
-            SubtitleNrLabel.Size = new Size(63, 15);
-            SubtitleNrLabel.TabIndex = 14;
-            SubtitleNrLabel.Text = "Subtitle Nr";
-            // 
-            // SubtitleNr
-            // 
-            SubtitleNr.Location = new Point(8, 68);
-            SubtitleNr.Name = "SubtitleNr";
-            SubtitleNr.Size = new Size(239, 23);
-            SubtitleNr.TabIndex = 15;
-            SubtitleNr.Text = "0";
-            // 
-            // PhonemeNameLabel
-            // 
-            PhonemeNameLabel.AutoSize = true;
-            PhonemeNameLabel.Location = new Point(8, 6);
-            PhonemeNameLabel.Name = "PhonemeNameLabel";
-            PhonemeNameLabel.Size = new Size(93, 15);
-            PhonemeNameLabel.TabIndex = 12;
-            PhonemeNameLabel.Text = "Phoneme Name";
-            // 
-            // PhonemeName
-            // 
-            PhonemeName.Location = new Point(8, 24);
-            PhonemeName.Name = "PhonemeName";
-            PhonemeName.Size = new Size(239, 23);
-            PhonemeName.TabIndex = 13;
-            // 
             // PhraseTab
             // 
             PhraseTab.Controls.Add(ATSButtonPhrase);
@@ -756,6 +667,140 @@
             CameraLabel.TabIndex = 18;
             CameraLabel.Text = "Camera";
             // 
+            // PhonemeTab
+            // 
+            PhonemeTab.Controls.Add(PhonemePhraseLabel);
+            PhonemeTab.Controls.Add(PhonemePhraseCombo);
+            PhonemeTab.Controls.Add(ATSButtonPhoneme);
+            PhonemeTab.Controls.Add(SubtitleFileName);
+            PhonemeTab.Controls.Add(SubtitleFileNameLabel);
+            PhonemeTab.Controls.Add(OutTimeLabel);
+            PhonemeTab.Controls.Add(OutTime);
+            PhonemeTab.Controls.Add(InTimeLabel);
+            PhonemeTab.Controls.Add(InTime);
+            PhonemeTab.Controls.Add(SubtitleNrLabel);
+            PhonemeTab.Controls.Add(SubtitleNr);
+            PhonemeTab.Controls.Add(PhonemeNameLabel);
+            PhonemeTab.Controls.Add(PhonemeName);
+            PhonemeTab.Location = new Point(4, 24);
+            PhonemeTab.Name = "PhonemeTab";
+            PhonemeTab.Padding = new Padding(3);
+            PhonemeTab.Size = new Size(510, 403);
+            PhonemeTab.TabIndex = 1;
+            PhonemeTab.Text = "Phoneme";
+            PhonemeTab.UseVisualStyleBackColor = true;
+            // 
+            // PhonemePhraseLabel
+            // 
+            PhonemePhraseLabel.AutoSize = true;
+            PhonemePhraseLabel.Location = new Point(263, 6);
+            PhonemePhraseLabel.Name = "PhonemePhraseLabel";
+            PhonemePhraseLabel.Size = new Size(42, 15);
+            PhonemePhraseLabel.TabIndex = 49;
+            PhonemePhraseLabel.Text = "Phrase";
+            // 
+            // PhonemePhraseCombo
+            // 
+            PhonemePhraseCombo.FormattingEnabled = true;
+            PhonemePhraseCombo.Location = new Point(263, 24);
+            PhonemePhraseCombo.Name = "PhonemePhraseCombo";
+            PhonemePhraseCombo.Size = new Size(239, 23);
+            PhonemePhraseCombo.TabIndex = 48;
+            PhonemePhraseCombo.SelectedIndexChanged += PhonemePhraseCombo_SelectedIndexChanged;
+            // 
+            // ATSButtonPhoneme
+            // 
+            ATSButtonPhoneme.Location = new Point(8, 141);
+            ATSButtonPhoneme.Name = "ATSButtonPhoneme";
+            ATSButtonPhoneme.Size = new Size(117, 23);
+            ATSButtonPhoneme.TabIndex = 47;
+            ATSButtonPhoneme.Text = "Apply To Selected";
+            ATSButtonPhoneme.UseVisualStyleBackColor = true;
+            ATSButtonPhoneme.Click += ATSButtonPhoneme_Click;
+            // 
+            // SubtitleFileName
+            // 
+            SubtitleFileName.Location = new Point(8, 362);
+            SubtitleFileName.Name = "SubtitleFileName";
+            SubtitleFileName.Size = new Size(239, 23);
+            SubtitleFileName.TabIndex = 7;
+            // 
+            // SubtitleFileNameLabel
+            // 
+            SubtitleFileNameLabel.AutoSize = true;
+            SubtitleFileNameLabel.Location = new Point(8, 344);
+            SubtitleFileNameLabel.Name = "SubtitleFileNameLabel";
+            SubtitleFileNameLabel.Size = new Size(103, 15);
+            SubtitleFileNameLabel.TabIndex = 6;
+            SubtitleFileNameLabel.Text = "Subtitle File Name";
+            // 
+            // OutTimeLabel
+            // 
+            OutTimeLabel.AutoSize = true;
+            OutTimeLabel.Location = new Point(137, 94);
+            OutTimeLabel.Name = "OutTimeLabel";
+            OutTimeLabel.Size = new Size(56, 15);
+            OutTimeLabel.TabIndex = 21;
+            OutTimeLabel.Text = "Out Time";
+            // 
+            // OutTime
+            // 
+            OutTime.Location = new Point(137, 112);
+            OutTime.Name = "OutTime";
+            OutTime.Size = new Size(110, 23);
+            OutTime.TabIndex = 20;
+            OutTime.Text = "200";
+            // 
+            // InTimeLabel
+            // 
+            InTimeLabel.AutoSize = true;
+            InTimeLabel.Location = new Point(8, 94);
+            InTimeLabel.Name = "InTimeLabel";
+            InTimeLabel.Size = new Size(46, 15);
+            InTimeLabel.TabIndex = 18;
+            InTimeLabel.Text = "In Time";
+            // 
+            // InTime
+            // 
+            InTime.Location = new Point(8, 112);
+            InTime.Name = "InTime";
+            InTime.Size = new Size(110, 23);
+            InTime.TabIndex = 19;
+            InTime.Text = "200";
+            // 
+            // SubtitleNrLabel
+            // 
+            SubtitleNrLabel.AutoSize = true;
+            SubtitleNrLabel.Location = new Point(8, 50);
+            SubtitleNrLabel.Name = "SubtitleNrLabel";
+            SubtitleNrLabel.Size = new Size(63, 15);
+            SubtitleNrLabel.TabIndex = 14;
+            SubtitleNrLabel.Text = "Subtitle Nr";
+            // 
+            // SubtitleNr
+            // 
+            SubtitleNr.Location = new Point(8, 68);
+            SubtitleNr.Name = "SubtitleNr";
+            SubtitleNr.Size = new Size(239, 23);
+            SubtitleNr.TabIndex = 15;
+            SubtitleNr.Text = "0";
+            // 
+            // PhonemeNameLabel
+            // 
+            PhonemeNameLabel.AutoSize = true;
+            PhonemeNameLabel.Location = new Point(8, 6);
+            PhonemeNameLabel.Name = "PhonemeNameLabel";
+            PhonemeNameLabel.Size = new Size(93, 15);
+            PhonemeNameLabel.TabIndex = 12;
+            PhonemeNameLabel.Text = "Phoneme Name";
+            // 
+            // PhonemeName
+            // 
+            PhonemeName.Location = new Point(8, 24);
+            PhonemeName.Name = "PhonemeName";
+            PhonemeName.Size = new Size(239, 23);
+            PhonemeName.TabIndex = 13;
+            // 
             // CellTab
             // 
             CellTab.Controls.Add(CellPanel);
@@ -772,30 +817,65 @@
             // 
             // CellPanel
             // 
+            CellPanel.Controls.Add(LockPosRotCheck);
+            CellPanel.Controls.Add(BodyAnimCombo);
+            CellPanel.Controls.Add(HeadAnimCombo);
+            CellPanel.Controls.Add(LipAnimCombo);
             CellPanel.Controls.Add(ActorRot);
             CellPanel.Controls.Add(ApplyCellButton);
             CellPanel.Controls.Add(RotLabel);
             CellPanel.Controls.Add(ActorPos);
             CellPanel.Controls.Add(PosLabel);
             CellPanel.Controls.Add(FitBodyAnimCheck);
-            CellPanel.Controls.Add(BodyAnim);
             CellPanel.Controls.Add(BodyAnimLabel);
             CellPanel.Controls.Add(BodyType);
             CellPanel.Controls.Add(BodyTypeLabel);
             CellPanel.Controls.Add(FitHeadAnimCheck);
-            CellPanel.Controls.Add(HeadAnim);
             CellPanel.Controls.Add(HeadAnimLabel);
             CellPanel.Controls.Add(HeadType);
             CellPanel.Controls.Add(HeadTypeLabel);
             CellPanel.Controls.Add(LipScaler);
             CellPanel.Controls.Add(LipScalerLabel);
-            CellPanel.Controls.Add(LipAnimName);
             CellPanel.Controls.Add(SpeakingCheck);
             CellPanel.Controls.Add(LipAnimLabel);
             CellPanel.Location = new Point(8, 100);
             CellPanel.Name = "CellPanel";
             CellPanel.Size = new Size(494, 300);
             CellPanel.TabIndex = 29;
+            // 
+            // LockPosRotCheck
+            // 
+            LockPosRotCheck.AutoSize = true;
+            LockPosRotCheck.Location = new Point(361, 264);
+            LockPosRotCheck.Name = "LockPosRotCheck";
+            LockPosRotCheck.Size = new Size(96, 19);
+            LockPosRotCheck.TabIndex = 58;
+            LockPosRotCheck.Text = "Lock Pos/Rot";
+            LockPosRotCheck.UseVisualStyleBackColor = true;
+            // 
+            // BodyAnimCombo
+            // 
+            BodyAnimCombo.FormattingEnabled = true;
+            BodyAnimCombo.Location = new Point(341, 106);
+            BodyAnimCombo.Name = "BodyAnimCombo";
+            BodyAnimCombo.Size = new Size(140, 23);
+            BodyAnimCombo.TabIndex = 57;
+            // 
+            // HeadAnimCombo
+            // 
+            HeadAnimCombo.FormattingEnabled = true;
+            HeadAnimCombo.Location = new Point(99, 106);
+            HeadAnimCombo.Name = "HeadAnimCombo";
+            HeadAnimCombo.Size = new Size(140, 23);
+            HeadAnimCombo.TabIndex = 56;
+            // 
+            // LipAnimCombo
+            // 
+            LipAnimCombo.FormattingEnabled = true;
+            LipAnimCombo.Location = new Point(99, 3);
+            LipAnimCombo.Name = "LipAnimCombo";
+            LipAnimCombo.Size = new Size(140, 23);
+            LipAnimCombo.TabIndex = 55;
             // 
             // ActorRot
             // 
@@ -851,13 +931,6 @@
             FitBodyAnimCheck.Text = "Fit Anim To Phrase?";
             FitBodyAnimCheck.UseVisualStyleBackColor = true;
             // 
-            // BodyAnim
-            // 
-            BodyAnim.Location = new Point(341, 106);
-            BodyAnim.Name = "BodyAnim";
-            BodyAnim.Size = new Size(140, 23);
-            BodyAnim.TabIndex = 42;
-            // 
             // BodyAnimLabel
             // 
             BodyAnimLabel.AutoSize = true;
@@ -893,13 +966,6 @@
             FitHeadAnimCheck.TabIndex = 38;
             FitHeadAnimCheck.Text = "Fit Anim To Phrase?";
             FitHeadAnimCheck.UseVisualStyleBackColor = true;
-            // 
-            // HeadAnim
-            // 
-            HeadAnim.Location = new Point(99, 106);
-            HeadAnim.Name = "HeadAnim";
-            HeadAnim.Size = new Size(140, 23);
-            HeadAnim.TabIndex = 37;
             // 
             // HeadAnimLabel
             // 
@@ -943,13 +1009,6 @@
             LipScalerLabel.Size = new Size(57, 15);
             LipScalerLabel.TabIndex = 32;
             LipScalerLabel.Text = "Lip Scaler";
-            // 
-            // LipAnimName
-            // 
-            LipAnimName.Location = new Point(99, 3);
-            LipAnimName.Name = "LipAnimName";
-            LipAnimName.Size = new Size(140, 23);
-            LipAnimName.TabIndex = 31;
             // 
             // SpeakingCheck
             // 
@@ -1033,23 +1092,46 @@
             WarningMessage.Size = new Size(0, 15);
             WarningMessage.TabIndex = 6;
             // 
-            // PhonemePhraseCombo
+            // tabPage1
             // 
-            PhonemePhraseCombo.FormattingEnabled = true;
-            PhonemePhraseCombo.Location = new Point(263, 24);
-            PhonemePhraseCombo.Name = "PhonemePhraseCombo";
-            PhonemePhraseCombo.Size = new Size(239, 23);
-            PhonemePhraseCombo.TabIndex = 48;
-            PhonemePhraseCombo.SelectedIndexChanged += PhonemePhraseCombo_SelectedIndexChanged;
+            tabPage1.Controls.Add(SubsGuideLabel);
+            tabPage1.Controls.Add(SaveSubsButton);
+            tabPage1.Controls.Add(SubtitlesRTB);
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(510, 403);
+            tabPage1.TabIndex = 6;
+            tabPage1.Text = "Subtitles";
+            tabPage1.UseVisualStyleBackColor = true;
             // 
-            // PhonemePhraseLabel
+            // SubtitlesRTB
             // 
-            PhonemePhraseLabel.AutoSize = true;
-            PhonemePhraseLabel.Location = new Point(263, 6);
-            PhonemePhraseLabel.Name = "PhonemePhraseLabel";
-            PhonemePhraseLabel.Size = new Size(42, 15);
-            PhonemePhraseLabel.TabIndex = 49;
-            PhonemePhraseLabel.Text = "Phrase";
+            SubtitlesRTB.Dock = DockStyle.Top;
+            SubtitlesRTB.Location = new Point(3, 3);
+            SubtitlesRTB.Name = "SubtitlesRTB";
+            SubtitlesRTB.Size = new Size(504, 365);
+            SubtitlesRTB.TabIndex = 0;
+            SubtitlesRTB.Text = "";
+            // 
+            // SaveSubsButton
+            // 
+            SaveSubsButton.Location = new Point(384, 374);
+            SaveSubsButton.Name = "SaveSubsButton";
+            SaveSubsButton.Size = new Size(118, 23);
+            SaveSubsButton.TabIndex = 1;
+            SaveSubsButton.Text = "Save As";
+            SaveSubsButton.UseVisualStyleBackColor = true;
+            SaveSubsButton.Click += SaveSubsButton_Click;
+            // 
+            // SubsGuideLabel
+            // 
+            SubsGuideLabel.AutoSize = true;
+            SubsGuideLabel.Location = new Point(8, 378);
+            SubsGuideLabel.Name = "SubsGuideLabel";
+            SubsGuideLabel.Size = new Size(236, 15);
+            SubsGuideLabel.TabIndex = 2;
+            SubsGuideLabel.Text = "Please enter your dialog one line per phrase";
             // 
             // Form1
             // 
@@ -1069,15 +1151,17 @@
             CameraTab.PerformLayout();
             ActiveCameraPanel.ResumeLayout(false);
             ActiveCameraPanel.PerformLayout();
-            PhonemeTab.ResumeLayout(false);
-            PhonemeTab.PerformLayout();
             PhraseTab.ResumeLayout(false);
             PhraseTab.PerformLayout();
+            PhonemeTab.ResumeLayout(false);
+            PhonemeTab.PerformLayout();
             CellTab.ResumeLayout(false);
             CellTab.PerformLayout();
             CellPanel.ResumeLayout(false);
             CellPanel.PerformLayout();
             OutputTab.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1150,19 +1234,16 @@
         private Panel CellPanel;
         private CheckBox SpeakingCheck;
         private Label LipAnimLabel;
-        private TextBox HeadAnim;
         private Label HeadAnimLabel;
         private TextBox HeadType;
         private Label HeadTypeLabel;
         private TextBox LipScaler;
         private Label LipScalerLabel;
-        private TextBox LipAnimName;
         private CheckBox FitHeadAnimCheck;
         private Label RotLabel;
         private TextBox ActorPos;
         private Label PosLabel;
         private CheckBox FitBodyAnimCheck;
-        private TextBox BodyAnim;
         private Label BodyAnimLabel;
         private TextBox BodyType;
         private Label BodyTypeLabel;
@@ -1177,5 +1258,15 @@
         private Button ATSButtonPhrase;
         private Label PhonemePhraseLabel;
         private ComboBox PhonemePhraseCombo;
+        private Label BadPathLabel;
+        private TextBox BadPath;
+        private ComboBox BodyAnimCombo;
+        private ComboBox HeadAnimCombo;
+        private ComboBox LipAnimCombo;
+        private CheckBox LockPosRotCheck;
+        private TabPage tabPage1;
+        private Label SubsGuideLabel;
+        private Button SaveSubsButton;
+        private RichTextBox SubtitlesRTB;
     }
 }
